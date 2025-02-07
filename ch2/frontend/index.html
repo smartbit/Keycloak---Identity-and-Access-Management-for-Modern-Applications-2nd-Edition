@@ -2,8 +2,7 @@
 <html>
 <head>
     <title>Keycloak Example Application</title>
-    <script type="text/javascript" src="KC_URL/js/keycloak.js"></script>
-    <script type="text/javascript">
+    <script type="module">
         function output(content) {
             if (typeof content === 'object') {
                 content = JSON.stringify(content, null, 2)
@@ -35,7 +34,8 @@
             req.send();
         }
 
-        var kc = new Keycloak({ realm: 'myrealm', clientId: 'myclient' });
+        import Keycloak from './node_modules/keycloak-js/lib/keycloak.js';
+        var kc = new Keycloak({ url: "KC_URL", realm: 'myrealm', clientId: 'myclient' });
         window.onload = function() {
             kc.init({'messageReceiveTimeout': 100000}).then(function() {
                 if(kc.authenticated) {
@@ -50,6 +50,7 @@
 <body>
 
 <div id="anonymous" style="display: none">
+    <!-- TODO login should be async, see https://www.keycloak.org/docs/latest/upgrading/index.html#methods-for-login-are-now-async -->
     <button onclick="window.kc.login()">Login</button>
 </div>
 
